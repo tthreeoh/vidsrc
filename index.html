@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -131,5 +131,369 @@ document.getElementById("showBtn").addEventListener("click", function() {
 
 </script>
 
+</body>
+</html>
+ -->
+
+
+ <!-- <!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    body {
+        background-color: black;
+        color: white;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100%;
+    }
+    .info-pane {
+        background-color: #222;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 600px;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    .info-pane img {
+        max-width: 100%;
+        height: auto;
+    }
+    .info-pane h2 {
+        margin: 10px 0;
+    }
+    .info-pane p {
+        margin: 10px 0;
+        font-size: 14px;
+    }
+    .info-pane strong {
+        font-size: 18px;
+    }
+    .button {
+        background-color: #444;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 20px;
+        display: inline-block;
+        min-width: 150px;
+    }
+    .button:hover {
+        background-color: #666;
+    }
+    #timer {
+        font-size: 20px;
+        margin: 15px 0;
+        color: #ffcc00;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="info-pane" id="demo">
+            Loading movie information...
+            <div id="timer"></div>
+            <button class="button" id="playNowBtn">Play Now</button>
+        </div>
+    </div>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const imdbID = params.get("imdb");
+    const embedUrl = params.get("embed");
+    
+    let delayTime = 10; // Delay in seconds
+    let countdownTimer;
+
+    // Show movie info if IMDB ID is present
+    if (imdbID) {
+        fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=5aa3307`)
+            .then(response => response.json())
+            .then(result => {
+                document.getElementById("demo").innerHTML = `
+                    <h2>${result.Title} (${result.Year})</h2>
+                    <p><strong>Rated:</strong> ${result.Rated}</p>
+                    <p><strong>Runtime:</strong> ${result.Runtime}</p>
+                    <p><strong>IMDB Rating:</strong> ${result.imdbRating}</p>
+                    <img src="${result.Poster}" alt="Poster">
+                    <p><strong>Plot:</strong></p>
+                    <p>${result.Plot}</p>
+                    <div id="timer"></div>
+                    <button class="button" id="playNowBtn">Play Now</button>
+                `;
+                
+                // Re-attach event listener to the new button
+                const playNowBtn = document.getElementById("playNowBtn");
+                playNowBtn.addEventListener("click", () => {
+                    clearInterval(countdownTimer); // Stop the countdown
+                    playVideo(); // Play video immediately
+                });
+                
+                startCountdown(); // Start countdown after loading data
+            })
+            .catch(error => {
+                console.error('Error fetching movie data:', error);
+                document.getElementById("demo").textContent = "Error loading movie information.";
+            });
+    } else {
+        document.getElementById("demo").textContent = "No IMDb ID provided.";
+    }
+
+    // Countdown Timer
+    const startCountdown = () => {
+        let remainingTime = delayTime;
+        const timerDisplay = document.getElementById("timer");
+        const playNowBtn = document.getElementById("playNowBtn");
+        
+        // Update button text initially
+        updateButtonText(remainingTime, playNowBtn);
+        
+        countdownTimer = setInterval(() => {
+            if (remainingTime <= 0) {
+                clearInterval(countdownTimer);
+                timerDisplay.textContent = "Starting movie...";
+                playNowBtn.textContent = "Loading...";
+                playVideo();
+            } else {
+                remainingTime--;
+                updateButtonText(remainingTime, playNowBtn);
+            }
+        }, 1000);
+    };
+
+    // Update button text with countdown
+    const updateButtonText = (timeLeft, button) => {
+        const timerDisplay = document.getElementById("timer");
+        if (timeLeft > 0) {
+            button.textContent = `Play Now (${timeLeft}s)`;
+            timerDisplay.textContent = `Auto-playing in ${timeLeft} seconds...`;
+        } else {
+            button.textContent = "Loading...";
+            timerDisplay.textContent = "Starting movie...";
+        }
+    };
+
+    // Play the video by redirecting to the extension player
+    const playVideo = () => {
+        if (embedUrl) {
+            const extUrl = `chrome-extension://emnphkkblegpebimobpbekeedfgemhof/player.html#${embedUrl}`;
+            window.location.href = extUrl; // Redirect to the player
+        } else {
+            document.getElementById("timer").textContent = "No embed URL provided.";
+        }
+    };
+});
+</script>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    body {
+        background-color: black;
+        color: white;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100%;
+    }
+    .info-pane {
+        background-color: #222;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 600px;
+        text-align: center;
+        box-sizing: border-box;
+    }
+    .info-pane img {
+        max-width: 100%;
+        height: auto;
+    }
+    .info-pane h2 {
+        margin: 10px 0;
+    }
+    .info-pane p {
+        margin: 10px 0;
+        font-size: 14px;
+    }
+    .info-pane strong {
+        font-size: 18px;
+    }
+    .button {
+        background-color: #444;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 20px;
+        display: inline-block;
+        min-width: 150px;
+    }
+    .button:hover {
+        background-color: #666;
+    }
+    #timer {
+        font-size: 20px;
+        margin: 15px 0;
+        color: #ffcc00;
+        font-weight: bold;
+    }
+    #keyInputContainer {
+        margin-bottom: 20px;
+    }
+    #apiKeyInput {
+        padding: 10px;
+        font-size: 16px;
+        width: 80%;
+        margin-bottom: 10px;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="info-pane" id="demo">
+            Loading movie information...
+            <div id="keyInputContainer" style="display: none;">
+                <input type="text" id="apiKeyInput" placeholder="Enter your OMDb API key">
+                <button class="button" id="saveApiKeyBtn">Save API Key</button>
+            </div>
+            <div id="timer"></div>
+            <button class="button" id="playNowBtn">Play Now</button>
+        </div>
+    </div>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const imdbID = params.get("imdb");
+    const embedUrl = params.get("embed");
+    const apiKeyFromURL = params.get("key");
+
+    let delayTime = 5;
+    let countdownTimer;
+    let apiKey = localStorage.getItem("omdbApiKey");
+
+    // If key is passed via URL, use and store it
+    if (apiKeyFromURL) {
+        apiKey = apiKeyFromURL;
+        localStorage.setItem("omdbApiKey", apiKey);
+    }
+
+    // If no key exists, prompt for input
+    if (!apiKey) {
+        document.getElementById("keyInputContainer").style.display = "block";
+        document.getElementById("saveApiKeyBtn").addEventListener("click", () => {
+            const inputKey = document.getElementById("apiKeyInput").value.trim();
+            if (inputKey) {
+                localStorage.setItem("omdbApiKey", inputKey);
+                location.reload(); // reload with new key
+            }
+        });
+        return; // stop execution until key is set
+    }
+
+    if (imdbID) {
+        fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`)
+            .then(response => response.json())
+            .then(result => {
+                if (result.Response === "False") {
+                    throw new Error(result.Error);
+                }
+                document.getElementById("demo").innerHTML = `
+                    <h2>${result.Title} (${result.Year})</h2>
+                    <p><strong>Rated:</strong> ${result.Rated}</p>
+                    <p><strong>Runtime:</strong> ${result.Runtime}</p>
+                    <p><strong>IMDB Rating:</strong> ${result.imdbRating}</p>
+                    <img src="${result.Poster}" alt="Poster">
+                    <p><strong>Plot:</strong></p>
+                    <p>${result.Plot}</p>
+                    <div id="timer"></div>
+                    <button class="button" id="playNowBtn">Play Now</button>
+                `;
+
+                document.getElementById("playNowBtn").addEventListener("click", () => {
+                    clearInterval(countdownTimer);
+                    playVideo();
+                });
+
+                startCountdown();
+            })
+            .catch(error => {
+                console.error("Error fetching movie data:", error);
+                document.getElementById("demo").textContent = "Error: " + error.message;
+            });
+    } else {
+        document.getElementById("demo").textContent = "No IMDb ID provided.";
+    }
+
+    function startCountdown() {
+        let remainingTime = delayTime;
+        const timerDisplay = document.getElementById("timer");
+        const playNowBtn = document.getElementById("playNowBtn");
+
+        updateButtonText(remainingTime, playNowBtn);
+
+        countdownTimer = setInterval(() => {
+            if (remainingTime <= 0) {
+                clearInterval(countdownTimer);
+                timerDisplay.textContent = "Starting movie...";
+                playNowBtn.textContent = "Loading...";
+                playVideo();
+            } else {
+                remainingTime--;
+                updateButtonText(remainingTime, playNowBtn);
+            }
+        }, 1000);
+    }
+
+    function updateButtonText(timeLeft, button) {
+        const timerDisplay = document.getElementById("timer");
+        if (timeLeft > 0) {
+            button.textContent = `Play Now (${timeLeft}s)`;
+            timerDisplay.textContent = `Auto-playing in ${timeLeft}`;
+        } else {
+            button.textContent = "Loading...";
+            timerDisplay.textContent = "Starting movie...";
+        }
+    }
+
+    function playVideo() {
+        if (embedUrl) {
+            const extUrl = `chrome-extension://emnphkkblegpebimobpbekeedfgemhof/player.html#${embedUrl}`;
+            window.location.href = extUrl;
+        } else {
+            document.getElementById("timer").textContent = "No embed URL provided.";
+        }
+    }
+});
+</script>
 </body>
 </html>
